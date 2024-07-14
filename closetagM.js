@@ -1,14 +1,14 @@
+// #title = "Close Last Tag"
+// #tooltip = "終了タグ入力"
+// #icon = "xx.ico"
+// 上は好みで適宜変更してください。
+
 // Close Last Tag 3.0 Mary用 私家改造版
 // これはgis_dur氏によるClose Last Tag 3.0を
 // 個人用に書き換えたものです。
 // テキストエディタMaryで一応動きます。動作保証はできません。
 // JavaScriptの勉強ついでなのでミスがありそうな気がします。
 // JavaScriptの勉強ついでなのでコメントをたくさん追加しています。
-
-// 好みで適宜変更してください。
-// #title = "Close Last Tag"
-// #tooltip = "終了タグ入力"
-// #icon = "xx.ico"
 
 // 以下オリジナルのライセンス
 
