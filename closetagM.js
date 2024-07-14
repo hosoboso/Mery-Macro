@@ -95,12 +95,12 @@ var NO_CLOSE_TAG = "," +
 //  Editor.CancelMode(0);
 // 
 //  改行を統一
+//  ※Mery のエディタエンジンは内部データの改行コードをすべて LF で扱う仕様なので改行を統一する必要はない
 //  all_text = all_text.replace(/\r\n|\r|\n/g, "\n");
 //  var all_lines = all_text.split("\n");
 //  var num_lines = all_lines.length;
 // 
 //  カーソル以前のテキストをすべて取得
-//  ※Mery のエディタエンジンは内部データの改行コードをすべて LF で扱う仕様なので要らない
 //  var tmp_text = all_lines[cursorY];
 //  if (tmp_text == null) {
 //    tmp_text = "";
@@ -296,19 +296,19 @@ var NO_CLOSE_TAG = "," +
 	}
 
 // エラーダイアログ表示
-//  if (is_error) {
-//    Shell.Popup(err_text, 0, "文法エラー", 0);
-//    return;
-//  }
+// if (is_error) {
+//   Shell.Popup(err_text, 0, "文法エラー", 0);
+//   return;
+// }
 // 
-//  // 終了タグの挿入
-//  Editor.InsText(ins_text);
+// 終了タグの挿入
+// Editor.InsText(ins_text);
 // 
-//  // カーソルを動かさない場合は、元の位置に戻す
-//  if (!MOVE_CURSOR) {
-//    for (var i=0; i<ins_text.length; i++) {
-//      Editor.Left(0);
-//    }
+// カーソルを動かさない場合は、元の位置に戻す
+// if (!MOVE_CURSOR) {
+//   for (var i=0; i<ins_text.length; i++) {
+//     Editor.Left(0);
+//   }
 
 	// エラーダイアログ表示
 	// 元マクロはエラーダイアログ表示以外にシェル使っていないので(JScriptはシェルでダイアログ表示）、
