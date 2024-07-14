@@ -153,7 +153,7 @@ var NO_CLOSE_TAG = "," +
 	var all_tags = cursorBeforeArray.join(" ").match(TAGS_EXPRESSION);
 	var num_tags = (all_tags == null)? 0: all_tags.length;
  
-	// 直前の開始タグを検索
+	// 直前の開始タグを検索　now_textがタグ
 	for (var i=num_tags-1; i>=0; i--) {
 		// タグ文字列取得
 		var now_text = all_tags[i];
@@ -311,14 +311,15 @@ var NO_CLOSE_TAG = "," +
 //    }
 
 	// エラーダイアログ表示
+	// 元マクロはエラーダイアログ表示以外にシェル使っていないので、シェルではなくWindow.alert()を使う
 	if (is_error) {
 	alert('文法エラー\n' + err_text);
 		return;
 	}
  
-	// 終了タグの挿入
-	if (num_tags != 0){
+	// 終了タグの挿入　タグ挿入なしならカーソルを元の位置に戻すだけ
 	document.selection.SetActivePoint(mePosLogical, cursorX, cursorY, false);
+	if (num_tags != 0){
 	document.write(ins_text);
 	}
 })();
