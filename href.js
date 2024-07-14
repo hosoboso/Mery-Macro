@@ -1,5 +1,10 @@
 ﻿﻿// アドレスを<a href="hogehoge" target="_blank">hogehoge</a>に変換
 
+// 好みで適宜変更してください。
+// #title = "<a>タグ"
+// #tooltip = "リンクタグ"
+// #icon = "xx.ico"
+
 // target="_blank"を入れる場合
 var Targetblank = " target=\"_blank\"";
 // target="_blank"がいらない場合

@@ -2,6 +2,11 @@
 // 選択した文字列なら何の文字でも16進数の数値文字参照に変換
 // 文字列がカラの時のalertは別になくても良いのでコメントアウトしてます
 
+// 好みで適宜変更してください。
+// #title = "数値文字参照置換"
+// #tooltip = "16進数数値文字参照置換"
+// #icon = "xx.ico"
+
 var result = "";
 var inputStrings = document.selection.Text;
 
