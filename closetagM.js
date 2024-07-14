@@ -3,10 +3,10 @@
 // #icon = "xx.ico"
 // 上は好みで適宜変更してください。
 
-// Close Last Tag 3.0 Mary用 私家改造版
+// Close Last Tag 3.0 Mery用 私家改造版
 // これはgis_dur氏によるClose Last Tag 3.0を
 // 個人用に書き換えたものです。
-// テキストエディタMaryで一応動きます。動作保証はできません。
+// テキストエディタMeryで一応動きます。動作保証はできません。
 // JavaScriptの勉強ついでなのでミスがありそうな気がします。
 // JavaScriptの勉強ついでなのでコメントをたくさん追加しています。
 
@@ -41,10 +41,16 @@ var XML_MODE = false;
 // 閉じタグを省略可能な要素名
 var NO_CLOSE_TAG = "," +
 [
-	"area", "base", "basefont", "bgsound", "br",
+	"area", "base", "br",
 	"col", "embed", "frame", "hr", "img",
-	"input", "isindex", "keygen", "link", "meta",
-	"nextid", "param", "spacer", "wbr"
+	"input", "link", "meta", "wbr",
+	"source", "track"
+	// "source", "track"はHTML5で追加
+	// "basefont", "spacer", "isindex" ,"nextid"はHTML5で廃止なので上一覧から削除しました
+	// "bgsound"はInternet Explorer 独自タグなので削除しました
+	// "frame", "keygen", "param"は非推奨なので削除しました
+	// 参照：Void element （空要素） https://developer.mozilla.org/ja/docs/Glossary/Void_element
+	
 ].join(",") + ",";
 
 /*********************************************************/
