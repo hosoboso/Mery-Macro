@@ -10,7 +10,7 @@ if (document.selection.IsEmpty) {
 	var ClipboardText = ClipboardData.GetData();
 	var ClipboardHref = "<a href=\"" + ClipboardText + "\"" + Targetblank + "></a>";
 	document.write(ClipboardHref);
-}else{
+} else {
 // テキストが選択されていれば選択されたテキストでリンクを作る
 	var Selecttext = document.selection.Text;
 	var SelectHref = "<a href=\"" + Selecttext + "\"" + Targetblank + ">" + Selecttext + "</a>";

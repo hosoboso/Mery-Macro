@@ -23,7 +23,7 @@ if(document.selection.IsEmpty){
 	listText = "<ul>\n";
 	for (var i = 0; i < textArray.length; i++) {
 		listText += indent + "<li>" + textArray[i] + "</li>\n";
-		}
+	}
 	listText += "</ul>";
 
 	document.write(listText);
