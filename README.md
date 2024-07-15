@@ -14,21 +14,20 @@ Mery ベータ版 Ver 3.7.2 (64 ビット版)
 [サクラエディタマクロ](https://www.haijin-boys.com/wiki/%E3%83%A1%E3%82%A4%E3%83%B3%E3%83%9A%E3%83%BC%E3%82%B8)を手直ししたものを置いてあります。  
 マクロの登録方法はヘルプ参照。
 
-マクロの行頭に
+> [!TIP]
+> Meryでは、マクロの行頭に
+> ```HTML
+> #title = "マクロ名"
+> #tooltip = "マクロ名ツールチップ"
+> #icon = "xx.ico"
+> ```
+> で、表示名やアイコンを変更できます。  
+> 必ず行頭に入れる必要があります（行頭にはコメントアウト行なども入れてはだめ）。  
+> アイコンは自前で用意するなりしてください。  
+> 
+> 上を入力しないとマクロのファイル名がそのまま登録されます。
 
-```HTML
-#title = "マクロ名"
-#tooltip = "マクロ名ツールチップ"
-#icon = "xx.ico"
-```
-
-で、表示名やアイコンを変更できます。  
-必ず行頭に入れる必要があります（行頭にはコメントアウト行なども入れてはだめ）。  
-アイコンは自前で用意するなりしてください。  
-
-上を入力しないとマクロのファイル名がそのまま登録されます。
-
-### p.js
+## [p.js](p.js)
 
 ```HTML
 <p>hogehoge</p>
@@ -36,7 +35,7 @@ Mery ベータ版 Ver 3.7.2 (64 ビット版)
 のようにテキストを挟むタグ変換。  
 pをdivやH1など他のタグに変更して他のタグのマクロも作成できる。
 
-### brreplace.js
+## [brreplace.js](brreplace.js)
 
 選択テキストの末尾に
 
@@ -46,7 +45,7 @@ pをdivやH1など他のタグに変更して他のタグのマクロも作成�
 
 を追加。
 
-### list.js
+## [list.js](list.js)
 
 選択テキストをリストタグに変換。
 
@@ -64,7 +63,7 @@ ccc
 </ul>
 ```
 
-### table.js
+## [table.js](table.js)
 
 選択テキストをテーブルタグに変換。
 
@@ -86,7 +85,7 @@ ccc	333
 </table>
 ```
 
-### href.js
+## [href.js](href.js)
 
 選択テキストhogehogeを、
 ```HTML
@@ -94,14 +93,14 @@ ccc	333
 ```
 に変換。
 
-### hexadecimal.js
+## [hexadecimal.js](hexadecimal.js)
 
 何の文字でも16進数の数値文字参照に変換。
 ```HTML
 ♥ → &#x2665;
 ♪ → &#x266a;
 ```
-### htmlentity.js
+## [htmlentity.js](htmlentity.js)
 
 HTML頻出の文字参照置換。選択文字列中の
 ```HTML
@@ -113,7 +112,7 @@ HTML頻出の文字参照置換。選択文字列中の
 ```
 に置換する。
 
-### closetagM.js
+## [closetagM.js](closetagM.js)
 
 [Close Last Tag（直前の閉じていない HTML/XML タグを閉じる）](https://sakura-editor.sourceforge.net/cgi-bin/cyclamen/cyclamen.cgi?log=macro&tree=c546)
 
