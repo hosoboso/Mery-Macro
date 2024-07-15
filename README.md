@@ -119,6 +119,13 @@ HTML頻出の文字参照置換。選択文字列中の
 サクラエディタ用のマクロ「Close Last Tag 3.0」を、Maryでも多分動くように個人的に書き換えてみたマクロです。  
 一応動きますが、素人が適当にいじったのでおかしい挙動をするかもしれません。
 
+## [Tagautocomp.js](Tagautocomp.js)
+
+[VSライクなhtml終タグ自動補完](https://sakura-editor.github.io/bbslog/sf/macro/341.html)
+
+サクラエディタ用のマクロ「VSライクなhtml終タグ自動補完」を、Maryでも多分動くように個人的に書き換えてみたマクロです。  
+一応動きますが、素人が適当にいじったのでおかしい挙動をするかもしれません。
+
 ## [公式Wikiのマクロライブラリ](https://www.haijin-boys.com/wiki/%E3%83%9E%E3%82%AF%E3%83%AD%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AA)
 
 [テキスト整形](https://www.haijin-boys.com/wiki/%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E6%95%B4%E5%BD%A2)
