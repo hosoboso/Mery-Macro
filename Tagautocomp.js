@@ -30,9 +30,9 @@ function Entry()
 	// Editor.Char(0x3e); // 0x3e = '>'
 		document.write(">"); 
 
-	// オリジナルでは「 > を出力する」だがテキストを入力したくない場合はalertとか好みで変更
+	// ＊オリジナルでは「 > を出力する」だがテキストを入力したくない場合は下のようにalertとか好みで変更
 	// alert('タグ自動補完開始');
-	// マクロ呼び出しの合図でしかないため、何もなしでも良いなら削除
+	// ＊マクロ呼び出しの合図でしかないため、何もなしでも良いなら29～35行は削除かコメントアウト
 
 	// 	var strFileName = Editor.GetFileName();
 	// 	if(/\.(htm|html|shtml)$/.test(strFileName)){
