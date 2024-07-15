@@ -10,6 +10,8 @@
 // JavaScriptの勉強ついでなのでミスがありそうな気がします。
 // JavaScriptの勉強ついでなのでコメントをたくさん追加しています。
 
+// 元ファイルはSJISですがUTF-8で保存しても動きます
+
 // 以下オリジナルのライセンス
 
 /**********************************************************
@@ -50,23 +52,25 @@ var NO_CLOSE_TAG = "," +
 	// "bgsound"はInternet Explorer 独自タグなので削除しました
 	// "frame", "keygen", "param"は非推奨なので削除しました
 	// 参照：Void element （空要素） https://developer.mozilla.org/ja/docs/Glossary/Void_element
-	
 ].join(",") + ",";
 
 /*********************************************************/
 
 // シェル
+// エラーダイアログ表示用、Window.alert()を使う場合は不要
 // if (typeof(Shell) == "undefined") {
 //   Shell = new ActiveXObject("WScript.Shell");
 // }
 
 // 文字列拡張
+// ※サクラエディタのANSI版用
 // if (typeof(String.prototype.is_wide) == "undefined") {
-// 	String.prototype.is_wide = function() {
-// 		if (this.length == 0) return false;
-// 		var c = (this.length == 1) ? this : this.charAt(0);
-// 		return (!c.match(/[ア-ンァィゥェォッャュョ゛゜ー、。「」・]/) && escape(c).length >= 4);
-// 	};
+//   String.prototype.is_wide = function() {
+//     if (UNICODE_VER) return false;
+//     if (this.length == 0) return false;
+//     var c = (this.length == 1) ? this : this.charAt(0);
+//     return (!c.match(/[ア-ンァィゥェォッャュョ゛゜ー、。「」・]/) && escape(c).length >= 4);
+//   };
 // }
 
 (function() {
