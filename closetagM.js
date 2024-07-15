@@ -1,75 +1,76 @@
 // #title = "Close Last Tag"
-// #tooltip = "�I���^�O����"
+// #tooltip = "終了タグ入力"
 // #icon = "xx.ico"
-// ��͍D�݂œK�X�ύX���Ă��������B
+// 上は好みで適宜変更してください。
 
-// Close Last Tag 3.0 Mery�p ���Ɖ�����
-// �����gis_dur���ɂ��Close Last Tag 3.0��
-// �l�p�ɏ������������̂ł��B
-// �e�L�X�g�G�f�B�^Mery�ňꉞ�����܂��B����ۏ؂͂ł��܂���B
-// JavaScript�̕׋����łȂ̂Ń~�X�����肻���ȋC�����܂��B
-// JavaScript�̕׋����łȂ̂ŃR�����g����������ǉ����Ă��܂��B
+// Close Last Tag 3.0 Mery用 私家改造版
+// これはgis_dur氏によるClose Last Tag 3.0を
+// 個人用に書き換えたものです。
+// テキストエディタMeryで一応動きます。動作保証はできません。
+// JavaScriptの勉強ついでなのでミスがありそうな気がします。
+// JavaScriptの勉強ついでなのでコメントをたくさん追加しています。
+// ＊以下「＊」がついたコメントは私・hosobosoによる追記
 
-// ���t�@�C����SJIS�ł���UTF-8�ŕۑ����Ă������܂�
+// ＊元ファイルはSJISですがUTF-8で保存しても動きます
 
-// �ȉ��I���W�i���̃��C�Z���X
+// ＊以下オリジナルのライセンス
 
 /**********************************************************
 **  Close Last Tag 3.0                                   **
 ***********************************************************
 **  A "Sakura-Editor Macro" using WSH 5.6                **
 **  For sakura.exe ver.1.6.2.0 and over                  **
-**                               zlib/libpng ���C�Z���X  **
+**                               zlib/libpng ライセンス  **
 **                      Copyright (C) 2004-2012 gis_dur  **
 ***********************************************************
-**�y����z                                               **
-**  �J�[�\���ʒu���O�ɂ��� HTML/XML �^�O��             **
-**  �t�@�C���擪�Ɍ������Č������A                       **
-**  1. �I���^�O�̂Ȃ��J�n�^�O                            **
-**  2. ���Ă��Ȃ�HTML�R�����g        <!--      -->     **
-**  3. ���Ă��Ȃ�CDATA�u���b�N       <![CDATA[ ]]>     **
-**  4. ���Ă��Ȃ�JSP�X�N���v�g���b�g <%        %>      **
-**  5. ���Ă��Ȃ�JSP�R�����g         <%--      --%>    **
-**  ������ꍇ�A�Ή�����I���^�O��}�����܂��B           **
-**  �R�����g�^�O���͖������܂��B                         **
+**【動作】                                               **
+**  カーソル位置より前にある HTML/XML タグを             **
+**  ファイル先頭に向かって検索し、                       **
+**  1. 終了タグのない開始タグ                            **
+**  2. 閉じていないHTMLコメント        <!--      -->     **
+**  3. 閉じていないCDATAブロック       <![CDATA[ ]]>     **
+**  4. 閉じていないJSPスクリプトレット <%        %>      **
+**  5. 閉じていないJSPコメント         <%--      --%>    **
+**  がある場合、対応する終了タグを挿入します。           **
+**  コメントタグ内は無視します。                         **
 **********************************************************/
 
-// �T�N���G�f�B�^ unicode �ł̏ꍇ�� true �ɂ���
+// サクラエディタ unicode 版の場合は true にする
 // var UNICODE_VER = true;
-// xml ���[�h�i�啶���E����������ʂ���j
+// xml モード（大文字・小文字を区別する）
 var XML_MODE = false;
-// �}���������^�O�̌��ɃJ�[�\�����ړ����邩�ǂ���
+// 挿入した閉じタグの後ろにカーソルを移動するかどうか
 // var MOVE_CURSOR = true;
-// ���^�O���ȗ��\�ȗv�f��
+// 閉じタグを省略可能な要素名
 var NO_CLOSE_TAG = "," +
 [
 	"area", "base", "br",
 	"col", "embed", "frame", "hr", "img",
 	"input", "link", "meta", "wbr",
 	"source", "track"
-	// "source", "track"��HTML5�Œǉ�
-	// "basefont", "spacer", "isindex" ,"nextid"��HTML5�Ŕp�~�Ȃ̂ŏ�ꗗ����폜���܂���
-	// "bgsound"��Internet Explorer �Ǝ��^�O�Ȃ̂ō폜���܂���
-	// "frame", "keygen", "param"�͔񐄏��Ȃ̂ō폜���܂���
-	// �Q�ƁFVoid element �i��v�f�j https://developer.mozilla.org/ja/docs/Glossary/Void_element
+	// ＊"source", "track"はHTML5で追加
+	// ＊"basefont", "spacer", "isindex" ,"nextid"はHTML5で廃止なので上一覧から削除しました
+	// ＊"bgsound"はInternet Explorer 独自タグなので削除しました
+	// ＊"frame", "keygen", "param"は非推奨なので削除しました
+	// ＊参照：Void element （空要素） https://developer.mozilla.org/ja/docs/Glossary/Void_element
 ].join(",") + ",";
 
 /*********************************************************/
 
-// �V�F��
-// �G���[�_�C�A���O�\���p�AWindow.alert()���g���ꍇ�͕s�v
+// シェル
+// ＊エラーダイアログ表示用、Window.alert()を使う場合は不要
 // if (typeof(Shell) == "undefined") {
 //   Shell = new ActiveXObject("WScript.Shell");
 // }
 
-// ������g��
-// ���T�N���G�f�B�^��ANSI�ŗp
+// 文字列拡張
+// ＊サクラエディタのANSI版用
 // if (typeof(String.prototype.is_wide) == "undefined") {
 //   String.prototype.is_wide = function() {
 //     if (UNICODE_VER) return false;
 //     if (this.length == 0) return false;
 //     var c = (this.length == 1) ? this : this.charAt(0);
-//     return (!c.match(/[�A-���@�B�D�F�H�b�������J�K�[�A�B�u�v�E]/) && escape(c).length >= 4);
+//     return (!c.match(/[ア-ンァィゥェォッャュョ゛゜ー、。「」・]/) && escape(c).length >= 4);
 //   };
 // }
 
@@ -77,7 +78,7 @@ var NO_CLOSE_TAG = "," +
 	if (!XML_MODE) {
 		NO_CLOSE_TAG = NO_CLOSE_TAG.toUpperCase();
 	}
-	// �^�O��\�����K�\��
+	// タグを表す正規表現
 	var TAG_CHARS = "s!\"#$%&\'()=~|^\\`{+*}<>?@[;],/";
 	(function(){
 		var tmp = "";
@@ -89,19 +90,19 @@ var NO_CLOSE_TAG = "," +
 	var TAGS_EXPRESSION = new RegExp();
 	TAGS_EXPRESSION.compile("<!--|-->|<!\\[CDATA\\[|\\]\\]>|<%--|--%>|<%|%>|<"+TAG_CHARS+"([^>]*/>)?|<\\/"+TAG_CHARS+"", "g");
  
-	// �f�[�^
+	// データ
 	var stack = new Array();
 	var ins_text = "";
 	var err_text = "";
  
-	// �X�e�[�g
+	// ステート
 	var is_comment = false;
 	var is_cdata = false;
 	var is_jsp_comment = false;
 	var is_jsp = false;
 	var is_error = false;
 
-// �e�L�X�g�����ׂĎ擾
+// テキストをすべて取得
 //  Editor.CancelMode(0);
 //  var cursorX = Number(Editor.ExpandParameter('$x')) - 1;
 //  var cursorY = Number(Editor.ExpandParameter('$y')) - 1;
@@ -109,13 +110,13 @@ var NO_CLOSE_TAG = "," +
 //  var all_text = Editor.GetSelectedString(0);
 //  Editor.CancelMode(0);
 // 
-//  ���s�𓝈�
-//  ��Mery �̃G�f�B�^�G���W���͓����f�[�^�̉��s�R�[�h�����ׂ� LF �ň����d�l�Ȃ̂ŉ��s�𓝈ꂷ��K�v�͂Ȃ�
+//  改行を統一
+//  ＊Mery のエディタエンジンは内部データの改行コードをすべて LF で扱う仕様なので改行を統一する必要はない
 //  all_text = all_text.replace(/\r\n|\r|\n/g, "\n");
 //  var all_lines = all_text.split("\n");
 //  var num_lines = all_lines.length;
 // 
-//  �J�[�\���ȑO�̃e�L�X�g�����ׂĎ擾
+//  カーソル以前のテキストをすべて取得
 //  var tmp_text = all_lines[cursorY];
 //  if (tmp_text == null) {
 //    tmp_text = "";
@@ -130,56 +131,56 @@ var NO_CLOSE_TAG = "," +
 //  }
 //  all_lines[cursorY] = tmp_text.substring(0, cursorX);
 
-	// ���݂̃X�N���[���o�[�擾
+	// ＊現在のスクロールバー取得
 	var sx = ScrollX, sy = ScrollY;
 
-	// ���݂̃J�[�\���ʒu���擾�@cursorX�̓J�[�\�����@cursorY�̓J�[�\���s
+	// ＊現在のカーソル位置を取得　cursorXはカーソル桁　cursorYはカーソル行
 	var cursorX = document.selection.GetActivePointX(mePosLogical);
 	var cursorY = document.selection.GetActivePointY(mePosLogical);
-	// ���ׂẴe�L�X�g��I�����A�I���e�L�X�g��all_text�Ƃ���
+	// ＊すべてのテキストを選択し、選択テキストをall_textとする
 	document.selection.selectAll();
 	var all_text = document.selection.Text;
-	// �I�������@meCollapseStart�őI���J�n�ʒu�Ɍ������đI��͈͂�����
+	// ＊選択解除　meCollapseStartで選択開始位置に向かって選択範囲を解除
 	document.selection.Collapse(meCollapseStart);
 	
-	// �S�e�L�X�g�����s�ŕ�������Array��all_lines
+	// ＊全テキストを改行で分割したArrayがall_lines
 	var all_lines = all_text.split("\n");
-	// �S�e�L�X�g�̍s��num_lines
+	// ＊全テキストの行数num_lines
 	var num_lines = all_lines.length;
 
-	// �J�[�\���s�̃J�[�\�����O�̃e�L�X�gtmp_text_start
+	// ＊カーソル行のカーソルより前のテキストtmp_text_start
 	var tmp_text_start = document.GetLine(cursorY).substring(0, (cursorX - 1));
 	
-	// �J�[�\���s�̃J�[�\�����s������tmp_text_start��null�Ȃ̂ŁA�J���ɒ���
+	// ＊カーソル行のカーソルが行頭だとtmp_text_startがnullなので、カラに直す
 	if (tmp_text_start == null) {
 		tmp_text_start = "";
 	}
 	
-	// �J�[�\���ȑO�̃e�L�X�g���s���Ƃ�Array��
+	// ＊カーソル以前のテキストを行ごとのArrayに
 	var cursorBeforeArray = [];
 	for (var i=0; i<(cursorY-1); i++) {
 		cursorBeforeArray[i] = all_lines[i];
 	}
-	//�Ō��tmp_text_start�𑫂�
+	// ＊最後にtmp_text_startを足す
 	cursorBeforeArray[cursorY-1] = tmp_text_start;
 
-// �^�O���擾
+// タグを取得
 // var all_tags = all_lines.join(" ").match(TAGS_EXPRESSION);
 // var num_tags = (all_tags == null)? 0: all_tags.length;
 
-	// cursorBeforeArray�̒��̃^�O���擾
+	// ＊cursorBeforeArrayの中のタグを取得
 	var all_tags = cursorBeforeArray.join(" ").match(TAGS_EXPRESSION);
 	var num_tags = (all_tags == null)? 0: all_tags.length;
  
-	// ���O�̊J�n�^�O�������@now_text���^�O
+	// ＊直前の開始タグを検索　now_textがタグ
 	for (var i=num_tags-1; i>=0; i--) {
-		// �^�O������擾
+		// タグ文字列取得
 		var now_text = all_tags[i];
 		if (!XML_MODE) {
 			now_text = now_text.toUpperCase();
 		}
  
-		// ����ȃX�e�[�g�ɂ���ꍇ
+		// 特殊なステートにある場合
 		if (is_comment) {
 			if (now_text == "<!--") {
 				is_comment = false;
@@ -205,7 +206,7 @@ var NO_CLOSE_TAG = "," +
 			continue;
 		}
  
-		// ����ȃX�e�[�g�ɑJ�ڂ���ꍇ
+		// 特殊なステートに遷移する場合
 		if (now_text == "-->") {
 			is_comment = true;
 			continue;
@@ -238,21 +239,21 @@ var NO_CLOSE_TAG = "," +
 			ins_text = "%>";
 			break;
 		}
-		// ���^�O�s�v
+		// 閉じタグ不要
 		else if (now_text.indexOf("/>") != -1) {
 			continue;
 		}
-		// ���^�O�̃X�^�b�N�ɒǉ�
+		// 閉じタグのスタックに追加
 		else if (now_text.indexOf("</") == 0) {
 			now_text = now_text.substring(2);
 			stack.push(now_text);
 			continue;
 		}
  
-		// �v�f���擾
+		// 要素名取得
 		now_text = now_text.substring(1);
  
-		// �ȗ��\�ȃ^�O�̏ꍇ
+		// 省略可能なタグの場合
 		if (NO_CLOSE_TAG.indexOf(","+now_text+",") != -1) {
 			if (stack.length == 0) {
 				continue;
@@ -265,7 +266,7 @@ var NO_CLOSE_TAG = "," +
 				continue;
 			}
 		}
-		// �ʏ�̃^�O�̏ꍇ
+		// 通常のタグの場合
 		else {
 			if (stack.length == 0) {
 				ins_text = "</" + all_tags[i].substring(1) + ">";
@@ -275,7 +276,7 @@ var NO_CLOSE_TAG = "," +
 				tmp_text = stack.pop();
 				if (now_text != tmp_text) {
 					is_error = true;
-					err_text += "�^�O�̕�܊֌W���s���ł��B\n";
+					err_text += "タグの包含関係が不正です。\n";
 					err_text += "<"+now_text+"> ... ... </"+tmp_text+">\n";
 					stack = new Array();
 					break;
@@ -284,63 +285,63 @@ var NO_CLOSE_TAG = "," +
 		}
 	}
  
-	// �R�����g��
+	// コメント中
 	if (is_comment) {
 		is_error = true;
-		err_text += "�R�����g�̊J�֌W���s���ł��B\n";
+		err_text += "コメントの開閉関係が不正です。\n";
 	}
-	// CDATA ��
+	// CDATA 中
 	else if (is_cdata) {
 		is_error = true;
-		err_text += "CDATA �u���b�N�̊J�֌W���s���ł��B\n";
+		err_text += "CDATA ブロックの開閉関係が不正です。\n";
 	}
-	// JSP �R�����g��
+	// JSP コメント中
 	else if (is_jsp_comment) {
 		is_error = true;
-		err_text += "JSP �R�����g�̊J�֌W���s���ł��B\n";
+		err_text += "JSP コメントの開閉関係が不正です。\n";
 	}
-	// JSP ��
+	// JSP 中
 	else if (is_jsp) {
 		is_error = true;
-		err_text += "JSP �X�N���v�g���b�g�̊J�֌W���s���ł��B\n";
+		err_text += "JSP スクリプトレットの開閉関係が不正です。\n";
 	}
-	// �X�^�b�N�ɏI���^�O����
+	// スタックに終了タグあり
 	else if (stack.length > 0) {
 		is_error = true;
-		err_text += "�J�n�^�O�̂Ȃ��I���^�O��������܂����B\n";
+		err_text += "開始タグのない終了タグが見つかりました。\n";
 		for (var i=0; i<stack.length; i++) {
 			err_text += "<"+stack[i]+">\n";
 		}
 	}
 
-// �G���[�_�C�A���O�\��
+// エラーダイアログ表示
 // if (is_error) {
-//   Shell.Popup(err_text, 0, "���@�G���[", 0);
+//   Shell.Popup(err_text, 0, "文法エラー", 0);
 //   return;
 // }
 // 
-// �I���^�O�̑}��
+// 終了タグの挿入
 // Editor.InsText(ins_text);
 // 
-// �J�[�\���𓮂����Ȃ��ꍇ�́A���̈ʒu�ɖ߂�
+// カーソルを動かさない場合は、元の位置に戻す
 // if (!MOVE_CURSOR) {
 //   for (var i=0; i<ins_text.length; i++) {
 //     Editor.Left(0);
 //   }
 
-	// �G���[�_�C�A���O�\��
-	// ���}�N���̓G���[�_�C�A���O�\���ȊO�ɃV�F���g���Ă��Ȃ��̂�(JScript�̓V�F���Ń_�C�A���O�\���j�A
-	// �V�F���ł͂Ȃ�Window.alert()���g��
+	// ＊エラーダイアログ表示
+	// ＊元マクロはエラーダイアログ表示以外にシェル使っていないので(JScriptはシェルでダイアログ表示）、
+	// ＊シェルではなくWindow.alert()を使う
 	if (is_error) {
-	alert('���@�G���[\n' + err_text);
+	alert('文法エラー\n' + err_text);
 		return;
 	}
  
-	// �I���^�O�̑}���@�^�O�}���Ȃ��Ȃ�J�[�\�������̈ʒu�ɖ߂�����
+	// ＊終了タグの挿入　タグ挿入なしならカーソルを元の位置に戻すだけ
 	document.selection.SetActivePoint(mePosLogical, cursorX, cursorY, false);
 	if (num_tags != 0){
 	document.write(ins_text);
 	}
-	//�X�N���[���ʒu�𕜌��@���ꂪ�Ȃ��Ƒ}���^�O�s���E�B���h�E��ԉ��ɃX�N���[��������ԂɂȂ�
+	// ＊スクロール位置を復元　これがないと挿入タグ行がウィンドウ一番下にスクロールした状態になる
 	ScrollX = sx; ScrollY = sy;
 })();
