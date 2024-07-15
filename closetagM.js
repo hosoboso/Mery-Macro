@@ -3,12 +3,12 @@
 // #icon = "xx.ico"
 // 上は好みで適宜変更してください。
 
-// Close Last Tag 3.0 Mery用 私家改造版
-// これはgis_dur氏によるClose Last Tag 3.0を
-// 個人用に書き換えたものです。
-// テキストエディタMeryで一応動きます。動作保証はできません。
-// JavaScriptの勉強ついでなのでミスがありそうな気がします。
-// JavaScriptの勉強ついでなのでコメントをたくさん追加しています。
+// ＊Close Last Tag 3.0 Mery用 私家改造版
+// ＊これはgis_dur氏によるClose Last Tag 3.0を
+// ＊個人用に書き換えたものです。
+// ＊テキストエディタMeryで一応動きます。動作保証はできません。
+// ＊JavaScriptの勉強ついでなのでミスがありそうな気がします。
+// ＊JavaScriptの勉強ついでなのでコメントをたくさん追加しています。
 // ＊以下「＊」がついたコメントは私・hosobosoによる追記
 
 // ＊元ファイルはSJISですがUTF-8で保存しても動きます
@@ -171,7 +171,7 @@ var NO_CLOSE_TAG = "," +
 	// ＊cursorBeforeArrayの中のタグを取得
 	var all_tags = cursorBeforeArray.join(" ").match(TAGS_EXPRESSION);
 	var num_tags = (all_tags == null)? 0: all_tags.length;
- 
+
 	// ＊直前の開始タグを検索　now_textがタグ
 	for (var i=num_tags-1; i>=0; i--) {
 		// タグ文字列取得
@@ -179,7 +179,7 @@ var NO_CLOSE_TAG = "," +
 		if (!XML_MODE) {
 			now_text = now_text.toUpperCase();
 		}
- 
+
 		// 特殊なステートにある場合
 		if (is_comment) {
 			if (now_text == "<!--") {
@@ -249,10 +249,10 @@ var NO_CLOSE_TAG = "," +
 			stack.push(now_text);
 			continue;
 		}
- 
+
 		// 要素名取得
 		now_text = now_text.substring(1);
- 
+
 		// 省略可能なタグの場合
 		if (NO_CLOSE_TAG.indexOf(","+now_text+",") != -1) {
 			if (stack.length == 0) {
@@ -284,7 +284,7 @@ var NO_CLOSE_TAG = "," +
 			}
 		}
 	}
- 
+
 	// コメント中
 	if (is_comment) {
 		is_error = true;
@@ -336,7 +336,7 @@ var NO_CLOSE_TAG = "," +
 	alert('文法エラー\n' + err_text);
 		return;
 	}
- 
+
 	// ＊終了タグの挿入　タグ挿入なしならカーソルを元の位置に戻すだけ
 	document.selection.SetActivePoint(mePosLogical, cursorX, cursorY, false);
 	if (num_tags != 0){

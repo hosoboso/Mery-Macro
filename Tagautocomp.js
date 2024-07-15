@@ -28,7 +28,7 @@ function Entry()
 {
 	// SHIFT + . で呼び出されるので、とりあえず > を出力する
 	// Editor.Char(0x3e); // 0x3e = '>'
-		document.write(">"); 
+	document.write(">"); 
 
 	// ＊オリジナルでは「 > を出力する」だがテキストを入力したくない場合は下のようにalertとか好みで変更
 	// alert('タグ自動補完開始');
@@ -41,82 +41,82 @@ function Entry()
 	//＊私はテキストファイルでHTMLの下書きをするので、対応ファイルにtxtを追加してあります。
 	//＊不要なら(htm|html|shtml|txt)を(htm|html|shtml)に戻してください。
 
-		var strFileName = document.Name;
-		if(/\.(htm|html|shtml|txt)$/.test(strFileName)){
-				ComplementTag(true);
-		}
-		else if(/\.(xml|xhtml)$/.test(strFileName)){
-				ComplementTag(false);
-		}
+	var strFileName = document.Name;
+	if(/\.(htm|html|shtml|txt)$/.test(strFileName)){
+		ComplementTag(true);
+	}
+	else if(/\.(xml|xhtml)$/.test(strFileName)){
+		ComplementTag(false);
+	}
 }
 
 
 function ComplementTag(isHTML)
 {
-		var strLine = GetCurLineUntilCursor();
-		var astrMatched = strLine.match(/<([^<>"']|"[^"]*?"|'[^']*?')+>$/); //'
-		if(astrMatched == null) return false;
-		var strTag = astrMatched[0];
+	var strLine = GetCurLineUntilCursor();
+	var astrMatched = strLine.match(/<([^<>"']|"[^"]*?"|'[^']*?')+>$/); //'
+	if(astrMatched == null) return false;
+	var strTag = astrMatched[0];
 
-		// 終タグを必要としないタグなら何もしない
-		if(/-->$|\/>$|\?>$/.test(strTag)) return;
-		if(strTag.search(/^<\s*(\w+)/) < 0) return;
+	// 終タグを必要としないタグなら何もしない
+	if(/-->$|\/>$|\?>$/.test(strTag)) return;
+	if(strTag.search(/^<\s*(\w+)/) < 0) return;
 
-		// タグ名を抽出
-		strTag = RegExp.$1;
+	// タグ名を抽出
+	strTag = RegExp.$1;
 
-		if(isHTML){
-				// HTMLの場合は、タグの種類によっては終タグがいらない
-// 				 if("|area|base|basefont|bgsound|br|col|embed|frame|hr|img|input|isindex|keygen|link|meta|nextid|param|spacer|wbr|"
-				// ＊HTML5対応タグのみに修正しました。
-				// ＊参照：Void element （空要素） https://developer.mozilla.org/ja/docs/Glossary/Void_element
-				if("|area|base|br|col|embed|frame|hr|img|input|link|meta|wbr|source|track|"
-						.indexOf("|" + strTag + "|") >= 0)
-				{
-						return;
-				}
+	if(isHTML){
+		// HTMLの場合は、タグの種類によっては終タグがいらない
+		// if("|area|base|basefont|bgsound|br|col|embed|frame|hr|img|input|isindex|keygen|link|meta|nextid|param|spacer|wbr|"
+		// ＊HTML5対応タグのみに修正しました。
+		// ＊参照：Void element （空要素） https://developer.mozilla.org/ja/docs/Glossary/Void_element
+		if("|area|base|br|col|embed|frame|hr|img|input|link|meta|wbr|source|track|"
+			.indexOf("|" + strTag + "|") >= 0)
+		{
+			return;
 		}
+	}
 
-		// 終タグを作って挿入
-		strTag = "</" + strTag + ">";
+	// 終タグを作って挿入
+	strTag = "</" + strTag + ">";
 
 // 	Editor.InsText(strTag);
 // 	for(var i = 0; i < strTag.length; ++i){
 // 		Editor.Left();
 // 	}
 
-		document.write(strTag);
-		document.selection.CharLeft( false, strTag.length);
+	document.write(strTag);
+	document.selection.CharLeft( false, strTag.length);
 
-		return true;
+	return true;
 }
 
 
 function GetCurLineUntilCursor()
 {
-		// カーソル位置取得
+// カーソル位置取得
 // 	var xCursor = parseInt(Editor.ExpandParameter('$x'));
 // 	var yCursor = parseInt(Editor.ExpandParameter('$y'));
-		var xCursor = document.selection.GetActivePointX(mePosLogical);
-		var yCursor = document.selection.GetActivePointY(mePosLogical);
- 
-		// カーソル行全体を取得
-// 	var str = Editor.GetLineStr(yCursor);
-		var str = document.GetLine(yCursor);
+	var xCursor = document.selection.GetActivePointX(mePosLogical);
+	var yCursor = document.selection.GetActivePointY(mePosLogical);
 
-// ＊このあたりはSJIS対応なのでMeryだと必要ないはず
-		// xCursor はマルチバイトコードでの値なのでユニコード用に補正
-//		 --xCursor; // １起算だったものを０起算に直す
-//		 for (var x = 0; x < xCursor; ++x){
-//				 if(IsWide(str.charCodeAt(x))) --xCursor;
-//		 }
-//	
-		return str.substring(0, xCursor);
+// カーソル行全体を取得
+// 	var str = Editor.GetLineStr(yCursor);
+	var str = document.GetLine(yCursor);
+
+// ＊ユニコード用補正はMeryだと必要ない
+// xCursor はマルチバイトコードでの値なのでユニコード用に補正
+// --xCursor; // １起算だったものを０起算に直す
+// for (var x = 0; x < xCursor; ++x){
+//	 if(IsWide(str.charCodeAt(x))) --xCursor;
+// }
+//
+	return str.substring(0, xCursor);
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// ＊このあたりもSJIS対応なのでMeryだと必要ないはず
+// ＊このあたりもユニコード用補正なのでMeryだと必要ない
 // ２バイト文字判定
 // function IsWide(charCode)
 // {
