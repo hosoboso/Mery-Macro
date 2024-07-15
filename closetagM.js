@@ -130,6 +130,9 @@ var NO_CLOSE_TAG = "," +
 //  }
 //  all_lines[cursorY] = tmp_text.substring(0, cursorX);
 
+	// 現在のスクロールバー取得
+	var sx = ScrollX, sy = ScrollY;
+
 	// 現在のカーソル位置を取得　cursorXはカーソル桁　cursorYはカーソル行
 	var cursorX = document.selection.GetActivePointX(mePosLogical);
 	var cursorY = document.selection.GetActivePointY(mePosLogical);
@@ -338,4 +341,6 @@ var NO_CLOSE_TAG = "," +
 	if (num_tags != 0){
 	document.write(ins_text);
 	}
+	//スクロール位置を復元　これがないと挿入タグ行がウィンドウ一番下にスクロールした状態になる
+	ScrollX = sx; ScrollY = sy;
 })();
