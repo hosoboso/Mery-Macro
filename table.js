@@ -24,8 +24,7 @@ if(document.selection.IsEmpty){
 	
 	// 改行\nで選択テキスト分割
 	// Mery のエディタエンジンは内部データの改行コードをすべて LF で扱う仕様とのこと
-	var textArray = [];
-	textArray = selectText.split("\n");
+	var textArray = selectText.split("\n");
 	// タブで分割　タブ区切りではないテキストの場合は「\t」部分を該当文字に変更してください
 	var tableArray = [];
 	for (let i = 0; i < textArray.length; i++) {

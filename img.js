@@ -23,13 +23,12 @@ if(Selecttext.length == 0) {
 	document.write("<img src=\"\" alt=\"\">");
 	document.selection.CharLeft(false, 9);
 } else {
-
 	// 選択テキストを改行で分割
 	var textArray = Selecttext.split("\n");
 
 	// 選択テキストが1行のみの場合2行目を空欄にする
 	if (textArray.length == 1){
-	textArray[1] = "";
+		textArray[1] = "";
 	}
 	
 	var SelectTag = "<img src=\"" + textArray[0] + "\" alt=\"" + textArray[1] + "\">";

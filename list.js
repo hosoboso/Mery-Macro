@@ -21,8 +21,7 @@ if(document.selection.IsEmpty){
 
 	// 改行\nで選択テキスト分割
 	// Mery のエディタエンジンは内部データの改行コードをすべて LF で扱う仕様とのこと
-	var textArray = [];
-	textArray = selectText.split("\n");
+	var textArray = selectText.split("\n");
 
 	//インデント（indent）や改行位置（\n）は好みで変更してください
 	listText = "<ul>\n";
