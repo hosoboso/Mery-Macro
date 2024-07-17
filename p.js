@@ -18,7 +18,7 @@ var attribute = "";
 // テキストが未選択の場合はタグだけ入力 CharLeftでカーソル位置を戻す
 if (document.selection.IsEmpty) {
 	document.write("<" + Tag + "></" + Tag + ">");
-	document.selection.CharLeft( false, (Tag.length + 3) );
+	document.selection.CharLeft(false, (Tag.length + 3) );
 // テキストが選択されていれば選択されたテキストをタグで挟む
 } else {
 	var Selecttext = document.selection.Text;
