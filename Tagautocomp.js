@@ -3,12 +3,14 @@
 // #icon = "xx.ico"
 // 上は好みで適宜変更してください。
 
-// ＊VSライクなhtml終タグ自動補完 Mery用 私家改造版
-// ＊これはpeak氏による「VSライクなhtml終タグ自動補完」を
-// ＊個人用に書き換えたものです。
-// ＊テキストエディタMeryで一応動きます。動作保証はできません。
+/*
+VSライクなhtml終タグ自動補完 Mery用 私家改造版
 
-// ＊以下「＊」がついたコメントは私・hosobosoによる追記
+これはpeak氏による「VSライクなhtml終タグ自動補完」を
+個人用に書き換えたものです。
+テキストエディタMeryで一応動きます。動作保証はできません。
+以下「＊」がついたコメントは私・hosobosoによる追記
+*/
 
 ////////////////////////////////////////////////////////////////////////////////
 // html, xml 入力支援
@@ -17,8 +19,11 @@
 // インストール方法
 // キー SHIFT + . にこのマクロを割り当ててください。
 
-// ＊一般的な109キーボードでは「Shift + .」でタグを閉じる「>」が入力されるので
-// ＊同時にこのマクロが動く仕組みです
+/*
+＊一般的な109キーボードでは「Shift + .」で
+＊タグを閉じる「>」が入力されるので
+＊同時にこのマクロが動く仕組みです
+*/
 
 ////////////////////////////////////////////////////////////////////////////////
 // エントリーポイント
@@ -35,9 +40,6 @@ function Entry()
 	// 	if(/\.(htm|html|shtml)$/.test(strFileName)){
 	// 		ComplementTag(true);
 
-	//＊私はテキストファイルでHTMLの下書きをするので、対応ファイルにtxtを追加してあります。
-	//＊不要なら(htm|html|shtml|txt)を(htm|html|shtml)に戻してください。
-
 	var strFileName = document.Name;
 	if(/\.(htm|html|shtml|txt)$/.test(strFileName)){
 		ComplementTag(true);
@@ -47,6 +49,10 @@ function Entry()
 	}
 }
 
+/*
+＊私はテキストファイルでHTMLの下書きをするので、44行目の対応ファイルにtxtを追加してあります。
+＊不要なら(htm|html|shtml|txt)を(htm|html|shtml)に戻してください。
+*/
 
 function ComplementTag(isHTML)
 {
@@ -65,14 +71,17 @@ function ComplementTag(isHTML)
 	if(isHTML){
 		// HTMLの場合は、タグの種類によっては終タグがいらない
 		// if("|area|base|basefont|bgsound|br|col|embed|frame|hr|img|input|isindex|keygen|link|meta|nextid|param|spacer|wbr|"
-		// ＊HTML5対応タグのみに修正しました。
-		// ＊参照：Void element （空要素） https://developer.mozilla.org/ja/docs/Glossary/Void_element
 		if("|area|base|br|col|embed|frame|hr|img|input|link|meta|wbr|source|track|"
 			.indexOf("|" + strTag + "|") >= 0)
 		{
 			return;
 		}
 	}
+
+/*
+＊73行目をHTML5対応タグのみに修正しました。
+＊参照：Void element （空要素） https://developer.mozilla.org/ja/docs/Glossary/Void_element
+*/
 
 	// 終タグを作って挿入
 	strTag = "</" + strTag + ">";
@@ -101,21 +110,20 @@ function GetCurLineUntilCursor()
 // 	var str = Editor.GetLineStr(yCursor);
 	var str = document.GetLine(yCursor);
 
-// ＊ユニコード用補正はMeryだと必要ない
 // xCursor はマルチバイトコードでの値なのでユニコード用に補正
 // --xCursor; // １起算だったものを０起算に直す
 // for (var x = 0; x < xCursor; ++x){
 //	 if(IsWide(str.charCodeAt(x))) --xCursor;
 // }
-//
+
 	return str.substring(0, xCursor);
 }
 
-
 ////////////////////////////////////////////////////////////////////////////////
-// ＊このあたりもユニコード用補正なのでMeryだと必要ない
 // ２バイト文字判定
 // function IsWide(charCode)
 // {
 //		 return	0x80 <= charCode && (charCode <= 0xff60 || 0xffa0 <= charCode);
 // }
+
+// ＊113行～、123行～、ユニコード用補正はMeryだと必要ないのでコメントアウトしています

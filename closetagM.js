@@ -3,15 +3,16 @@
 // #icon = "xx.ico"
 // 上は好みで適宜変更してください。
 
-// ＊Close Last Tag 3.0 Mery用 私家改造版
-// ＊これはgis_dur氏によるClose Last Tag 3.0を
-// ＊個人用に書き換えたものです。
-// ＊テキストエディタMeryで一応動きます。動作保証はできません。
-// ＊JavaScriptの勉強ついでなのでミスがありそうな気がします。
-// ＊JavaScriptの勉強ついでなのでコメントをたくさん追加しています。
-// ＊以下「＊」がついたコメントは私・hosobosoによる追記
+/*
+Close Last Tag 3.0 Mery用 私家改造版
 
-// ＊元ファイルはSJISですがUTF-8で保存しても動きます
+これはgis_dur氏によるClose Last Tag 3.0を個人用に書き換えたものです。
+テキストエディタMeryで一応動きます。動作保証はできません。
+JavaScriptの勉強ついでなのでミスがありそうな気がします。
+JavaScriptの勉強ついでなのでコメントをたくさん追加しています。
+元ファイルはSJISですがUTF-8で保存しても動きます
+以下「＊」がついたコメントは私・hosobosoによる追記
+*/
 
 // ＊以下オリジナルのライセンス
 
@@ -44,27 +45,34 @@ var XML_MODE = false;
 // 閉じタグを省略可能な要素名
 var NO_CLOSE_TAG = "," +
 [
-	"area", "base", "br",
-	"col", "embed", "frame", "hr", "img",
-	"input", "link", "meta", "wbr",
-	"source", "track"
-	// ＊"source", "track"はHTML5で追加
-	// ＊"basefont", "spacer", "isindex" ,"nextid"はHTML5で廃止なので上一覧から削除しました
-	// ＊"bgsound"はInternet Explorer 独自タグなので削除しました
-	// ＊"frame", "keygen", "param"は非推奨なので削除しました
-	// ＊参照：Void element （空要素） https://developer.mozilla.org/ja/docs/Glossary/Void_element
+	"area", "base", "br", "col", "embed", "frame", "hr", "img",
+	"input", "link", "meta", "wbr", "source", "track"
 ].join(",") + ",";
+
+/*
+＊閉じタグを省略可能な要素名を全面的に修正
+＊"source", "track"はHTML5で追加
+＊"basefont", "spacer", "isindex" ,"nextid"はHTML5で廃止なので上一覧から削除しました
+＊"bgsound"はInternet Explorer 独自タグなので削除しました
+＊"frame", "keygen", "param"は非推奨なので削除しました
+＊参照：Void element （空要素） https://developer.mozilla.org/ja/docs/Glossary/Void_element
+*/
 
 /*********************************************************/
 
 // シェル
-// ＊エラーダイアログ表示用、Window.alert()を使う場合は不要
 // if (typeof(Shell) == "undefined") {
 //   Shell = new ActiveXObject("WScript.Shell");
 // }
 
+/*
+＊上のシェルはエラーダイアログ表示用、Window.alert()を使う場合は不要
+＊もしシェルでエラーダイアログを出すのなら、
+var Shell = new ActiveXObject("WScript.Shell");
+＊と、Shellの前にvarを入れないとエラーになります。
+*/
+
 // 文字列拡張
-// ＊サクラエディタのANSI版用
 // if (typeof(String.prototype.is_wide) == "undefined") {
 //   String.prototype.is_wide = function() {
 //     if (UNICODE_VER) return false;
@@ -73,6 +81,8 @@ var NO_CLOSE_TAG = "," +
 //     return (!c.match(/[ア-ンァィゥェォッャュョ゛゜ー、。「」・]/) && escape(c).length >= 4);
 //   };
 // }
+
+// ＊文字列拡張はサクラエディタのANSI版用なのでコメントアウト
 
 (function() {
 	if (!XML_MODE) {
@@ -131,7 +141,7 @@ var NO_CLOSE_TAG = "," +
 //  }
 //  all_lines[cursorY] = tmp_text.substring(0, cursorX);
 
-	// ＊現在のスクロールバー取得
+	// ＊現在のスクロールバー位置を取得　Meryだと選択解除後スクロール位置が戻らないので記録しておく
 	var sx = ScrollX, sy = ScrollY;
 
 	// ＊現在のカーソル位置を取得　cursorXはカーソル桁　cursorYはカーソル行
@@ -161,7 +171,7 @@ var NO_CLOSE_TAG = "," +
 	for (var i=0; i<(cursorY-1); i++) {
 		cursorBeforeArray[i] = all_lines[i];
 	}
-	// ＊最後にtmp_text_startを足す
+	// ＊Arrayの最後にtmp_text_startを足す　これでカーソルより前のテキスト配列cursorBeforeArray完成
 	cursorBeforeArray[cursorY-1] = tmp_text_start;
 
 // タグを取得
@@ -329,19 +339,25 @@ var NO_CLOSE_TAG = "," +
 //     Editor.Left(0);
 //   }
 
+	// ＊カーソル＆スクロール位置を復元
+	document.selection.SetActivePoint(mePosLogical, cursorX, cursorY, false);
+	ScrollX = sx; ScrollY = sy;
+
+/*
+＊元マクロはエラーダイアログ表示以外にシェル使っていないので(サクラエディタはシェルでダイアログ表示）、
+＊シェルではなくWindow.alert()を使いましたが、元マクロのようにシェル呼び出しでも動くので好みで。
+＊シェル呼び出しは63行目からの追記を参照＆327～331行のコメントアウトを外してください。
+*/
+
 	// ＊エラーダイアログ表示
-	// ＊元マクロはエラーダイアログ表示以外にシェル使っていないので(JScriptはシェルでダイアログ表示）、
-	// ＊シェルではなくWindow.alert()を使う
 	if (is_error) {
-	alert('文法エラー\n' + err_text);
-		return;
+		alert('文法エラー\n' + err_text);
+	return;
 	}
 
-	// ＊終了タグの挿入　タグ挿入なしならカーソルを元の位置に戻すだけ
-	document.selection.SetActivePoint(mePosLogical, cursorX, cursorY, false);
+	// ＊終了タグの挿入
 	if (num_tags != 0){
 	document.write(ins_text);
 	}
-	// ＊スクロール位置を復元　これがないと挿入タグ行がウィンドウ一番下にスクロールした状態になる
-	ScrollX = sx; ScrollY = sy;
+
 })();
