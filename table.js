@@ -8,11 +8,11 @@
 
 // タグのインデントを指定、好みで変更してください
 // タブなら
-var indent = "\t";
+const indent = "\t";
 // 半角スペース2個なら
-// var indent = "  ";
+// const indent = "  ";
 // インデントなしなら
-// var indent = "";
+// const indent = "";
 
 //テキストを選択していない時はテーブルタグの雛形を入力
 if(document.selection.IsEmpty){
@@ -20,19 +20,19 @@ if(document.selection.IsEmpty){
 
 //テキストを選択しているならテーブルタグ挿入
 } else {
-	var selectText = document.selection.Text;
+	const selectText = document.selection.Text;
 	
 	// 改行\nで選択テキスト分割
 	// Mery のエディタエンジンは内部データの改行コードをすべて LF で扱う仕様とのこと
-	var textArray = selectText.split("\n");
+	const textArray = selectText.split("\n");
 	// タブで分割　タブ区切りではないテキストの場合は「\t」部分を該当文字に変更してください
-	var tableArray = [];
+	const tableArray = [];
 	for (let i = 0; i < textArray.length; i++) {
 		tableArray[i] = textArray[i].split("\t");
 	}
 
-	var tableRow = "";	//1行分のタグ
-	var tableText = "";	//テーブルタグ全体
+	let tableRow = "";	//1行分のタグ
+	let tableText = "";	//テーブルタグ全体
 
 	//インデント（indent）や改行位置（\n）は好みで変更してください
 	for (let i = 0; i < tableArray.length; i++) {

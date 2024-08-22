@@ -40,7 +40,7 @@ function Entry()
 	// 	if(/\.(htm|html|shtml)$/.test(strFileName)){
 	// 		ComplementTag(true);
 
-	var strFileName = document.Name;
+	const strFileName = document.Name;
 	if(/\.(htm|html|shtml|txt)$/.test(strFileName)){
 		ComplementTag(true);
 	}
@@ -56,10 +56,10 @@ function Entry()
 
 function ComplementTag(isHTML)
 {
-	var strLine = GetCurLineUntilCursor();
-	var astrMatched = strLine.match(/<([^<>"']|"[^"]*?"|'[^']*?')+>$/); //'
+	const strLine = GetCurLineUntilCursor();
+	const astrMatched = strLine.match(/<([^<>"']|"[^"]*?"|'[^']*?')+>$/); //'
 	if(astrMatched == null) return false;
-	var strTag = astrMatched[0];
+	let strTag = astrMatched[0];
 
 	// 終タグを必要としないタグなら何もしない
 	if(/-->$|\/>$|\?>$/.test(strTag)) return;
@@ -103,12 +103,12 @@ function GetCurLineUntilCursor()
 // カーソル位置取得
 // 	var xCursor = parseInt(Editor.ExpandParameter('$x'));
 // 	var yCursor = parseInt(Editor.ExpandParameter('$y'));
-	var xCursor = document.selection.GetActivePointX(mePosLogical);
-	var yCursor = document.selection.GetActivePointY(mePosLogical);
+	const xCursor = document.selection.GetActivePointX(mePosLogical);
+	const yCursor = document.selection.GetActivePointY(mePosLogical);
 
 // カーソル行全体を取得
 // 	var str = Editor.GetLineStr(yCursor);
-	var str = document.GetLine(yCursor);
+	const str = document.GetLine(yCursor);
 
 // xCursor はマルチバイトコードでの値なのでユニコード用に補正
 // --xCursor; // １起算だったものを０起算に直す

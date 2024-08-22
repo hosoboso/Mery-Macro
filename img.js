@@ -19,26 +19,26 @@ map.jpg
 1行のみ選択の場合は画像ファイルのアドレスのみ入力
 */
 
-var Selecttext = document.selection.Text;
+const Selecttext = document.selection.Text;
 
 if(Selecttext.length == 0) {
 	document.write("<img src=\"\" alt=\"\">");
 	document.selection.CharLeft(false, 9);
 } else {
 	// 選択テキストを改行で分割
-	var textArray = Selecttext.split("\n");
+	const textArray = Selecttext.split("\n");
 
 	// 選択テキストが1行のみの場合2行目を空欄にする
 	if (textArray.length == 1){
 		textArray[1] = "";
 	}
 	
-	var SelectTag = "<img src=\"" + textArray[0] + "\" alt=\"" + textArray[1] + "\">";
+	const SelectTag = "<img src=\"" + textArray[0] + "\" alt=\"" + textArray[1] + "\">";
 	document.write(SelectTag);
 	
 	// 3行以上選択していた場合は以降にそのまま追加
 	if (textArray.length > 1){
-		for (var i = 2; i < textArray.length; i++) {
+		for (let i = 2; i < textArray.length; i++) {
 			document.write("\n" + textArray[i]);
 		}
 	}

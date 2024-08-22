@@ -20,9 +20,9 @@ openFile Mery用 私家改造版
 //openFile
 //選択したテキストをファイル名として開く
 
-var dir = document.FullName;
-var selected = document.selection.Text;
-var p = 0;	//親階層数
+let dir = document.FullName;
+let selected = document.selection.Text;
+let p = 0;	//親階層数
 
 // ＊ファイル及びフォルダが存在するか確認するための「FileSystemObject」オブジェクト生成
 var fso = new ActiveXObject( "Scripting.FileSystemObject" );
@@ -31,12 +31,12 @@ var fso = new ActiveXObject( "Scripting.FileSystemObject" );
 // ＊「shell.FileExists(textfile)」に変更しても動きます。
 
 // ＊おまけ用　69行目以降の指定した拡張子を関連付けられたアプリケーションで開く場合
-var wshShell = new ActiveXObject( "WScript.Shell" );
+const wshShell = new ActiveXObject( "WScript.Shell" );
 
 //選択文字列がフルパスかどうかの判定
-var textfile;
+let textfile;
 if (selected.search(/^[a-z]:\\/i)>=0){
-	var textfile = selected;
+	textfile = selected;
 } else {
 	//選択文字列がフルパスではない場合
 	//親階層の検索
@@ -47,7 +47,7 @@ if (selected.search(/^[a-z]:\\/i)>=0){
 	//現在のファイルパスからファイル名を取り除く
 	do {
 		if ( (n = dir.lastIndexOf("\\")) != -1){
-			var dir = dir.substring(0,n);
+			dir = dir.substring(0,n);
 		}
 		p--;
 	} while(p>=0);

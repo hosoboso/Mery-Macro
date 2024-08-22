@@ -39,11 +39,11 @@ JavaScriptの勉強ついでなのでコメントをたくさん追加してい�
 // サクラエディタ unicode 版の場合は true にする
 // var UNICODE_VER = true;
 // xml モード（大文字・小文字を区別する）
-var XML_MODE = false;
+let XML_MODE = false;
 // 挿入した閉じタグの後ろにカーソルを移動するかどうか
 // var MOVE_CURSOR = true;
 // 閉じタグを省略可能な要素名
-var NO_CLOSE_TAG = "," +
+let NO_CLOSE_TAG = "," +
 [
 	"area", "base", "br", "col", "embed", "frame", "hr", "img",
 	"input", "link", "meta", "wbr", "source", "track"
@@ -89,28 +89,28 @@ var Shell = new ActiveXObject("WScript.Shell");
 		NO_CLOSE_TAG = NO_CLOSE_TAG.toUpperCase();
 	}
 	// タグを表す正規表現
-	var TAG_CHARS = "s!\"#$%&\'()=~|^\\`{+*}<>?@[;],/";
+	let TAG_CHARS = "s!\"#$%&\'()=~|^\\`{+*}<>?@[;],/";
 	(function(){
-		var tmp = "";
-		for (var i=0; i<TAG_CHARS.length; i++) {
+		let tmp = "";
+		for (let i=0; i<TAG_CHARS.length; i++) {
 			tmp += "\\"+TAG_CHARS.charAt(i);
 		}
 		TAG_CHARS = "[^"+tmp+"]+";
 	})();
-	var TAGS_EXPRESSION = new RegExp();
+	let TAGS_EXPRESSION = new RegExp();
 	TAGS_EXPRESSION.compile("<!--|-->|<!\\[CDATA\\[|\\]\\]>|<%--|--%>|<%|%>|<"+TAG_CHARS+"([^>]*/>)?|<\\/"+TAG_CHARS+"", "g");
  
 	// データ
-	var stack = new Array();
-	var ins_text = "";
-	var err_text = "";
+	let stack = new Array();
+	let ins_text = "";
+	let err_text = "";
  
 	// ステート
-	var is_comment = false;
-	var is_cdata = false;
-	var is_jsp_comment = false;
-	var is_jsp = false;
-	var is_error = false;
+	let is_comment = false;
+	let is_cdata = false;
+	let is_jsp_comment = false;
+	let is_jsp = false;
+	let is_error = false;
 
 // テキストをすべて取得
 //  Editor.CancelMode(0);
@@ -141,25 +141,25 @@ var Shell = new ActiveXObject("WScript.Shell");
 //  }
 //  all_lines[cursorY] = tmp_text.substring(0, cursorX);
 
-	// ＊現在のスクロールバー位置を取得　Meryだと選択解除後スクロール位置が戻らないので記録しておく
-	var sx = ScrollX, sy = ScrollY;
+	// ＊現在のスクロールバー取得
+	let sx = ScrollX, sy = ScrollY;
 
 	// ＊現在のカーソル位置を取得　cursorXはカーソル桁　cursorYはカーソル行
-	var cursorX = document.selection.GetActivePointX(mePosLogical);
-	var cursorY = document.selection.GetActivePointY(mePosLogical);
+	const cursorX = document.selection.GetActivePointX(mePosLogical);
+	const cursorY = document.selection.GetActivePointY(mePosLogical);
 	// ＊すべてのテキストを選択し、選択テキストをall_textとする
 	document.selection.selectAll();
-	var all_text = document.selection.Text;
+	const all_text = document.selection.Text;
 	// ＊選択解除　meCollapseStartで選択開始位置に向かって選択範囲を解除
 	document.selection.Collapse(meCollapseStart);
 	
 	// ＊全テキストを改行で分割したArrayがall_lines
-	var all_lines = all_text.split("\n");
+	const all_lines = all_text.split("\n");
 	// ＊全テキストの行数num_lines
-	var num_lines = all_lines.length;
+	const num_lines = all_lines.length;
 
 	// ＊カーソル行のカーソルより前のテキストtmp_text_start
-	var tmp_text_start = document.GetLine(cursorY).substring(0, (cursorX - 1));
+	let tmp_text_start = document.GetLine(cursorY).substring(0, (cursorX - 1));
 	
 	// ＊カーソル行のカーソルが行頭だとtmp_text_startがnullなので、カラに直す
 	if (tmp_text_start == null) {
@@ -167,8 +167,8 @@ var Shell = new ActiveXObject("WScript.Shell");
 	}
 	
 	// ＊カーソル以前のテキストを行ごとのArrayに
-	var cursorBeforeArray = [];
-	for (var i=0; i<(cursorY-1); i++) {
+	let cursorBeforeArray = [];
+	for (let i=0; i<(cursorY-1); i++) {
 		cursorBeforeArray[i] = all_lines[i];
 	}
 	// ＊Arrayの最後にtmp_text_startを足す　これでカーソルより前のテキスト配列cursorBeforeArray完成
@@ -179,13 +179,13 @@ var Shell = new ActiveXObject("WScript.Shell");
 // var num_tags = (all_tags == null)? 0: all_tags.length;
 
 	// ＊cursorBeforeArrayの中のタグを取得
-	var all_tags = cursorBeforeArray.join(" ").match(TAGS_EXPRESSION);
-	var num_tags = (all_tags == null)? 0: all_tags.length;
+	const all_tags = cursorBeforeArray.join(" ").match(TAGS_EXPRESSION);
+	const num_tags = (all_tags == null)? 0: all_tags.length;
 
 	// ＊直前の開始タグを検索　now_textがタグ
-	for (var i=num_tags-1; i>=0; i--) {
+	for (let i=num_tags-1; i>=0; i--) {
 		// タグ文字列取得
-		var now_text = all_tags[i];
+		let now_text = all_tags[i];
 		if (!XML_MODE) {
 			now_text = now_text.toUpperCase();
 		}
@@ -319,7 +319,7 @@ var Shell = new ActiveXObject("WScript.Shell");
 	else if (stack.length > 0) {
 		is_error = true;
 		err_text += "開始タグのない終了タグが見つかりました。\n";
-		for (var i=0; i<stack.length; i++) {
+		for (let i=0; i<stack.length; i++) {
 			err_text += "<"+stack[i]+">\n";
 		}
 	}
